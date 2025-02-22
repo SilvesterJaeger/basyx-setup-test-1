@@ -11,10 +11,9 @@ services:
       - '8081:8081'
     restart: always
     depends_on:
-      aas-registry:
-        condition: service_healthy
-      sm-registry:
-        condition: service_healthy
+      - aas-registry
+      - sm-registry
+
   aas-registry:
     image: eclipsebasyx/aas-registry-log-mem:2.0.0-SNAPSHOT
     container_name: aas-registry
@@ -25,6 +24,7 @@ services:
     volumes:
       - ./basyx/aas-registry.yml:/workspace/config/application.yml
     restart: always
+
   sm-registry:
     image: eclipsebasyx/submodel-registry-log-mem:2.0.0-SNAPSHOT
     container_name: sm-registry
@@ -35,6 +35,7 @@ services:
     volumes:
       - ./basyx/sm-registry.yml:/workspace/config/application.yml
     restart: always
+
   aas-web-ui:
     image: eclipsebasyx/aas-gui:SNAPSHOT
     container_name: aas-ui
@@ -48,5 +49,4 @@ services:
       CD_REPO_PATH: http://localhost:8081/concept-descriptions
     restart: always
     depends_on:
-      aas-env:
-        condition: service_healthy
+      - aas-env
